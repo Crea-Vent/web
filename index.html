@@ -24,7 +24,8 @@
     header {
       display: flex;
       align-items: center;
-      padding: 20px 20px 16px;
+      justify-content: space-between;
+      padding: 18px 20px 14px;
       background-color: #ffffff;
       border-bottom: 1px solid #e0e7f3;
       box-shadow: 0 1px 4px rgba(30,80,200,0.06);
@@ -42,11 +43,11 @@
     .header-brand h1 span.dot { color: #1e50c8; }
 
     /* ── Pages ── */
-    .page { display: none; flex: 1; flex-direction: column; }
+    .page { display: none; flex: 1; flex-direction: column; overflow: hidden; }
     .page.active { display: flex; }
 
     .page-content {
-      padding: 24px 20px;
+      padding: 22px 18px;
       flex: 1;
       overflow-y: auto;
     }
@@ -58,59 +59,257 @@
       letter-spacing: 0.2em;
       text-transform: uppercase;
       color: #7b93c8;
-      margin-bottom: 16px;
+      margin-bottom: 14px;
     }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px;
+    }
+
+    .section-header .section-title { margin-bottom: 0; }
 
     /* ── Carte Bonjour ── */
     .card-bonjour {
       background: linear-gradient(135deg, #1e50c8 0%, #2e6be6 100%);
       border-radius: 18px;
-      padding: 28px 24px;
+      padding: 24px 20px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 32px;
+      margin-bottom: 16px;
       box-shadow: 0 6px 24px rgba(30,80,200,0.25);
       overflow: hidden;
     }
 
     .card-bonjour .card-text p {
       font-family: 'Open Sans', sans-serif;
-      font-size: 1rem;
+      font-size: 0.95rem;
       color: rgba(255,255,255,0.75);
-      margin-bottom: 6px;
+      margin-bottom: 4px;
     }
 
     .card-bonjour .card-text h2 {
       font-family: 'Montserrat', sans-serif;
-      font-size: 1.8rem;
+      font-size: 1.7rem;
       font-weight: 900;
       letter-spacing: 0.04em;
       text-transform: uppercase;
       color: #ffffff;
     }
 
-    .card-bonjour .card-text .dash {
-      width: 28px;
-      height: 3px;
-      background-color: rgba(255,255,255,0.6);
-      margin-top: 14px;
-      border-radius: 2px;
+    .card-bonjour .card-text .card-date {
+      font-family: 'Open Sans', sans-serif;
+      font-size: 0.85rem;
+      color: rgba(255,255,255,0.6);
+      margin-top: 8px;
     }
 
     .card-bonjour .card-icon {
-      width: 90px;
-      height: 90px;
+      width: 86px;
+      height: 86px;
       background: rgba(255,255,255,0.15);
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 2.6rem;
+      font-size: 2.4rem;
       flex-shrink: 0;
     }
 
-    /* ── Fiches liste ── */
+    /* ── Stats ── */
+    .stats-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 28px;
+    }
+
+    .stat-card {
+      background: #ffffff;
+      border-radius: 14px;
+      padding: 16px;
+      border: 1px solid #e0e7f3;
+      box-shadow: 0 2px 8px rgba(30,80,200,0.05);
+    }
+
+    .stat-card .stat-label {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.62rem;
+      font-weight: 800;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: #7b93c8;
+      margin-bottom: 8px;
+    }
+
+    .stat-card .stat-number {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 2rem;
+      font-weight: 900;
+      color: #1e50c8;
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+
+    .stat-card .stat-desc {
+      font-family: 'Open Sans', sans-serif;
+      font-size: 0.75rem;
+      color: #7b93c8;
+    }
+
+    /* ── Actualités ── */
+    .actu-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .actu-card {
+      background: #ffffff;
+      border-radius: 12px;
+      padding: 14px 16px;
+      border: 1px solid #e0e7f3;
+      border-left: 4px solid #1e50c8;
+      box-shadow: 0 2px 8px rgba(30,80,200,0.05);
+    }
+
+    .actu-card.cat-annonce   { border-left-color: #1e50c8; }
+    .actu-card.cat-meteo     { border-left-color: #22c55e; }
+    .actu-card.cat-rh        { border-left-color: #8b5cf6; }
+    .actu-card.cat-urgence   { border-left-color: #ef4444; }
+
+    .actu-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+
+    .actu-badge {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.62rem;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border-radius: 50px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .actu-badge.cat-annonce { background: #e8eeff; color: #1e50c8; }
+    .actu-badge.cat-meteo   { background: #dcfce7; color: #16a34a; }
+    .actu-badge.cat-rh      { background: #ede9fe; color: #7c3aed; }
+    .actu-badge.cat-urgence { background: #fee2e2; color: #dc2626; }
+
+    .actu-date {
+      font-family: 'Open Sans', sans-serif;
+      font-size: 0.72rem;
+      color: #b0bcd6;
+    }
+
+    .actu-title {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: #1a1a2e;
+      margin-bottom: 6px;
+    }
+
+    .actu-body {
+      font-family: 'Open Sans', sans-serif;
+      font-size: 0.82rem;
+      color: #5a6a8a;
+      line-height: 1.5;
+    }
+
+    .actu-empty {
+      font-family: 'Open Sans', sans-serif;
+      color: #b0bcd6;
+      font-size: 0.85rem;
+      text-align: center;
+      padding: 20px 0;
+    }
+
+    /* Bouton + */
+    .btn-add {
+      width: 32px;
+      height: 32px;
+      background-color: #1e50c8;
+      color: #ffffff;
+      border: none;
+      border-radius: 50%;
+      font-size: 1.3rem;
+      line-height: 1;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 3px 10px rgba(30,80,200,0.3);
+      flex-shrink: 0;
+    }
+
+    /* ── Modal ── */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(10,20,60,0.4);
+      z-index: 200;
+      align-items: flex-end;
+      justify-content: center;
+    }
+
+    .modal-overlay.open { display: flex; }
+
+    .modal {
+      background: #ffffff;
+      border-radius: 24px 24px 0 0;
+      padding: 28px 20px 36px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 -8px 40px rgba(30,80,200,0.15);
+    }
+
+    .modal-title {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 1rem;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: #1a1a2e;
+      margin-bottom: 20px;
+    }
+
+    .modal .form-group { margin-bottom: 16px; }
+
+    .modal-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 8px;
+    }
+
+    .btn-cancel {
+      flex: 1;
+      padding: 14px;
+      background: #f0f4ff;
+      color: #1e50c8;
+      border: none;
+      border-radius: 12px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      cursor: pointer;
+    }
+
+    /* ── Fiches ── */
     .fiches-list {
       display: flex;
       flex-direction: column;
@@ -153,31 +352,20 @@
       text-transform: uppercase;
       cursor: pointer;
       white-space: nowrap;
-      transition: background-color 0.2s;
     }
-
-    .btn-pdf:active { background-color: #163ea0; }
 
     .fiches-empty {
       font-family: 'Open Sans', sans-serif;
       color: #b0bcd6;
       font-size: 0.85rem;
       text-align: center;
-      margin-top: 8px;
+      padding: 20px 0;
     }
 
     /* ── Formulaire Entretien ── */
-    .form-entretien {
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-    }
+    .form-entretien { display: flex; flex-direction: column; gap: 20px; }
 
-    .form-group {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
+    .form-group { display: flex; flex-direction: column; gap: 8px; }
 
     .form-group label {
       font-family: 'Montserrat', sans-serif;
@@ -189,7 +377,8 @@
     }
 
     .form-group input,
-    .form-group textarea {
+    .form-group textarea,
+    .form-group select {
       font-family: 'Open Sans', sans-serif;
       background-color: #ffffff;
       border: 1.5px solid #dce6f5;
@@ -200,10 +389,12 @@
       outline: none;
       transition: border-color 0.2s, box-shadow 0.2s;
       width: 100%;
+      appearance: none;
     }
 
     .form-group input:focus,
-    .form-group textarea:focus {
+    .form-group textarea:focus,
+    .form-group select:focus {
       border-color: #1e50c8;
       box-shadow: 0 0 0 3px rgba(30,80,200,0.1);
     }
@@ -227,14 +418,10 @@
       text-transform: uppercase;
       cursor: pointer;
       box-shadow: 0 4px 14px rgba(30,80,200,0.3);
-      transition: background-color 0.2s;
+      width: 100%;
     }
 
-    .btn-submit:disabled {
-      background-color: #7b93c8;
-      cursor: not-allowed;
-      box-shadow: none;
-    }
+    .btn-submit:disabled { background-color: #7b93c8; cursor: not-allowed; box-shadow: none; }
 
     /* Toast */
     .toast {
@@ -242,7 +429,7 @@
       bottom: 90px;
       left: 50%;
       transform: translateX(-50%);
-      background-color: #1e50c8;
+      background-color: #1a1a2e;
       color: #fff;
       font-family: 'Montserrat', sans-serif;
       font-size: 0.8rem;
@@ -253,7 +440,7 @@
       transition: opacity 0.3s;
       pointer-events: none;
       white-space: nowrap;
-      box-shadow: 0 4px 16px rgba(30,80,200,0.3);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.15);
       z-index: 100;
     }
 
@@ -269,12 +456,12 @@
 
     nav button {
       flex: 1;
-      padding: 14px 0;
+      padding: 12px 0;
       background: none;
       border: none;
       color: #b0bcd6;
       font-family: 'Montserrat', sans-serif;
-      font-size: 0.7rem;
+      font-size: 0.65rem;
       font-weight: 700;
       cursor: pointer;
       display: flex;
@@ -286,11 +473,7 @@
       transition: color 0.2s;
     }
 
-    nav button.active {
-      color: #1e50c8;
-      border-top: 2px solid #1e50c8;
-    }
-
+    nav button.active { color: #1e50c8; border-top: 2px solid #1e50c8; }
     nav button svg { width: 22px; height: 22px; fill: currentColor; }
   </style>
 </head>
@@ -302,7 +485,7 @@
     </div>
   </header>
 
-  <!-- Page Accueil -->
+  <!-- ── Page Accueil ── -->
   <div class="page active" id="page-accueil">
     <div class="page-content">
 
@@ -312,60 +495,79 @@
         <div class="card-text">
           <p>Bonjour,</p>
           <h2>Salarié LEAC°</h2>
-          <div class="dash"></div>
+          <p class="card-date" id="today-date"></p>
         </div>
         <div class="card-icon">🚛</div>
       </div>
 
-      <p class="section-title">Fiches entretien</p>
-      <div class="fiches-list" id="fiches-list">
-        <p class="fiches-empty">Chargement...</p>
+      <div class="stats-row">
+        <div class="stat-card">
+          <div class="stat-label">Ce mois</div>
+          <div class="stat-number" id="stat-mois">—</div>
+          <div class="stat-desc">entretiens effectués</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Total</div>
+          <div class="stat-number" id="stat-total">—</div>
+          <div class="stat-desc">fiches enregistrées</div>
+        </div>
+      </div>
+
+      <div class="section-header">
+        <p class="section-title">Actualités</p>
+        <button class="btn-add" onclick="openModal()" title="Ajouter une actualité">+</button>
+      </div>
+      <div class="actu-list" id="actu-list">
+        <p class="actu-empty">Chargement...</p>
       </div>
 
     </div>
   </div>
 
-  <!-- Page Entretien -->
+  <!-- ── Page Entretien ── -->
   <div class="page" id="page-entretien">
     <div class="page-content">
 
       <p class="section-title">Nouvelle fiche entretien</p>
 
       <form class="form-entretien" id="form-entretien" onsubmit="submitFiche(event)">
-
         <div class="form-group">
           <label>Nom – Prénom du salarié</label>
           <input type="text" id="f-nom" placeholder="Ex : Dupont Jean" required>
         </div>
-
         <div class="form-group">
           <label>Date</label>
           <input type="date" id="f-date" required>
         </div>
-
         <div class="form-group">
           <label>Fournisseur</label>
           <input type="text" id="f-fournisseur" placeholder="Ex : Garage Martin" required>
         </div>
-
         <div class="form-group">
           <label>Cause de la réparation</label>
           <textarea id="f-cause" placeholder="Décrivez la cause de la réparation…" required></textarea>
         </div>
-
         <div class="form-group">
           <label>Temps passé</label>
           <input type="text" id="f-temps" placeholder="Ex : 2h30" required>
         </div>
-
         <button class="btn-submit" type="submit" id="btn-submit">Enregistrer</button>
-
       </form>
 
     </div>
   </div>
 
-  <!-- Navigation -->
+  <!-- ── Page Fiches ── -->
+  <div class="page" id="page-fiches">
+    <div class="page-content">
+      <p class="section-title">Fiches enregistrées</p>
+      <div class="fiches-list" id="fiches-list">
+        <p class="fiches-empty">Chargement...</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Navigation ── -->
   <nav>
     <button class="active" id="btn-accueil" onclick="showPage('accueil')">
       <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
@@ -375,23 +577,60 @@
       <svg viewBox="0 0 24 24"><path d="M22.7 19l-9.1-9.1c.9-2.3.4-5-1.5-6.9-2-2-5-2.4-7.4-1.3L9 6 6 9 1.6 4.7C.4 7.1.9 10.1 2.9 12.1c1.9 1.9 4.6 2.4 6.9 1.5l9.1 9.1c.4.4 1 .4 1.4 0l2.3-2.3c.5-.4.5-1.1.1-1.4z"/></svg>
       Entretien
     </button>
+    <button id="btn-fiches" onclick="showPage('fiches')">
+      <svg viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm4 18H6V4h7v5h5v11zM8 15h8v2H8v-2zm0-4h8v2H8v-2z"/></svg>
+      Fiches
+    </button>
   </nav>
+
+  <!-- ── Modal Actualité ── -->
+  <div class="modal-overlay" id="modal-overlay">
+    <div class="modal">
+      <p class="modal-title">Nouvelle actualité</p>
+      <form id="form-actu" onsubmit="submitActu(event)">
+        <div class="form-group">
+          <label>Catégorie</label>
+          <select id="a-cat">
+            <option value="annonce">📢 Annonce</option>
+            <option value="meteo">🌤️ Météo &amp; Routes</option>
+            <option value="rh">👥 RH &amp; Planning</option>
+            <option value="urgence">🚨 Urgence</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Titre</label>
+          <input type="text" id="a-titre" placeholder="Titre de l'actualité" required>
+        </div>
+        <div class="form-group">
+          <label>Contenu</label>
+          <textarea id="a-contenu" placeholder="Détails de l'actualité…" required></textarea>
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="btn-cancel" onclick="closeModal()">Annuler</button>
+          <button type="submit" class="btn-submit" id="btn-actu-submit" style="margin-top:0;flex:1.5">Publier</button>
+        </div>
+      </form>
+    </div>
+  </div>
 
   <div class="toast" id="toast"></div>
 
   <script>
-    // ── Firebase init ──
-    const firebaseConfig = {
+    // ── Firebase ──
+    firebase.initializeApp({
       apiKey: "AIzaSyDkprRkes8a4-VMS4BiiFYQllUlglo_5Q8",
       authDomain: "transports-leac.firebaseapp.com",
       projectId: "transports-leac",
       storageBucket: "transports-leac.firebasestorage.app",
       messagingSenderId: "939447553141",
       appId: "1:939447553141:web:e6a38db459e38a74a0fc3c"
-    };
-
-    firebase.initializeApp(firebaseConfig);
+    });
     const db = firebase.firestore();
+
+    // ── Date du jour ──
+    document.getElementById('today-date').textContent = new Date().toLocaleDateString('fr-FR', {
+      weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'
+    }).replace(/^\w/, c => c.toUpperCase());
 
     // ── Navigation ──
     function showPage(name) {
@@ -409,22 +648,84 @@
       setTimeout(() => t.classList.remove('show'), 3000);
     }
 
-    // ── Soumettre une fiche ──
+    // ── Modal ──
+    function openModal()  { document.getElementById('modal-overlay').classList.add('open'); }
+    function closeModal() { document.getElementById('modal-overlay').classList.remove('open'); }
+    document.getElementById('modal-overlay').addEventListener('click', e => {
+      if (e.target === e.currentTarget) closeModal();
+    });
+
+    // ── Configs catégories ──
+    const cats = {
+      annonce: { label: '📢 Annonce',        cls: 'cat-annonce' },
+      meteo:   { label: '🌤️ Météo & Routes', cls: 'cat-meteo'   },
+      rh:      { label: '👥 RH & Planning',  cls: 'cat-rh'      },
+      urgence: { label: '🚨 Urgence',         cls: 'cat-urgence' },
+    };
+
+    // ── Soumettre une actualité ──
+    async function submitActu(e) {
+      e.preventDefault();
+      const btn = document.getElementById('btn-actu-submit');
+      btn.disabled = true;
+      const actu = {
+        categorie:  document.getElementById('a-cat').value,
+        titre:      document.getElementById('a-titre').value.trim(),
+        contenu:    document.getElementById('a-contenu').value.trim(),
+        createdAt:  firebase.firestore.FieldValue.serverTimestamp()
+      };
+      try {
+        await db.collection('actualites').add(actu);
+        document.getElementById('form-actu').reset();
+        closeModal();
+        showToast('Actualité publiée !');
+      } catch (err) {
+        showToast('Erreur lors de la publication.');
+      } finally {
+        btn.disabled = false;
+      }
+    }
+
+    // ── Charger actualités ──
+    db.collection('actualites').orderBy('createdAt', 'desc').onSnapshot(snap => {
+      const list = document.getElementById('actu-list');
+      if (snap.empty) {
+        list.innerHTML = '<p class="actu-empty">Aucune actualité pour le moment.</p>';
+        return;
+      }
+      list.innerHTML = '';
+      snap.forEach(doc => {
+        const a = doc.data();
+        const cat = cats[a.categorie] || cats.annonce;
+        const date = a.createdAt ? a.createdAt.toDate().toLocaleDateString('fr-FR', { day: '2-digit', month: 'long', year: 'numeric' }) : '';
+        const card = document.createElement('div');
+        card.className = `actu-card ${cat.cls}`;
+        card.innerHTML = `
+          <div class="actu-top">
+            <span class="actu-badge ${cat.cls}">${cat.label}</span>
+            <span class="actu-date">${date}</span>
+          </div>
+          <p class="actu-title">${a.titre}</p>
+          <p class="actu-body">${a.contenu}</p>
+        `;
+        list.appendChild(card);
+      });
+    });
+
+    // ── Soumettre une fiche entretien ──
     async function submitFiche(e) {
       e.preventDefault();
       const btn = document.getElementById('btn-submit');
       btn.disabled = true;
       btn.textContent = 'Envoi en cours…';
-
       const fiche = {
-        nom:        document.getElementById('f-nom').value.trim(),
-        date:       document.getElementById('f-date').value,
-        fournisseur:document.getElementById('f-fournisseur').value.trim(),
-        cause:      document.getElementById('f-cause').value.trim(),
-        temps:      document.getElementById('f-temps').value.trim(),
-        createdAt:  firebase.firestore.FieldValue.serverTimestamp()
+        nom:         document.getElementById('f-nom').value.trim(),
+        date:        document.getElementById('f-date').value,
+        fournisseur: document.getElementById('f-fournisseur').value.trim(),
+        cause:       document.getElementById('f-cause').value.trim(),
+        temps:       document.getElementById('f-temps').value.trim(),
+        createdAt:   firebase.firestore.FieldValue.serverTimestamp()
       };
-
       try {
         await db.collection('fiches').add(fiche);
         document.getElementById('form-entretien').reset();
@@ -432,22 +733,35 @@
         showPage('accueil');
       } catch (err) {
         showToast('Erreur lors de l\'envoi.');
-        console.error(err);
       } finally {
         btn.disabled = false;
         btn.textContent = 'Enregistrer';
       }
     }
 
-    // ── Charger les fiches en temps réel ──
-    db.collection('fiches').orderBy('createdAt', 'desc').onSnapshot(snapshot => {
+    // ── Charger fiches + stats ──
+    db.collection('fiches').orderBy('createdAt', 'desc').onSnapshot(snap => {
+      // Stats
+      const now = new Date();
+      let mois = 0;
+      snap.forEach(doc => {
+        const d = doc.data();
+        if (d.createdAt) {
+          const t = d.createdAt.toDate();
+          if (t.getMonth() === now.getMonth() && t.getFullYear() === now.getFullYear()) mois++;
+        }
+      });
+      document.getElementById('stat-total').textContent = snap.size;
+      document.getElementById('stat-mois').textContent  = mois;
+
+      // Liste fiches
       const list = document.getElementById('fiches-list');
-      if (snapshot.empty) {
+      if (snap.empty) {
         list.innerHTML = '<p class="fiches-empty">Aucune fiche enregistrée.</p>';
         return;
       }
       list.innerHTML = '';
-      snapshot.forEach(doc => {
+      snap.forEach(doc => {
         const f = doc.data();
         const card = document.createElement('div');
         card.className = 'fiche-card';
@@ -462,14 +776,12 @@
       });
     });
 
-    // ── Générer le PDF ──
+    // ── Générer PDF ──
     function downloadPDF(f) {
       const { jsPDF } = window.jspdf;
       const doc = new jsPDF();
-
       doc.setFillColor(30, 80, 200);
       doc.rect(0, 0, 210, 30, 'F');
-
       doc.setTextColor(255, 255, 255);
       doc.setFont('helvetica', 'bold');
       doc.setFontSize(16);
@@ -477,11 +789,6 @@
       doc.setFontSize(9);
       doc.setFont('helvetica', 'normal');
       doc.text('FICHE D\'ENTRETIEN', 14, 22);
-
-      doc.setTextColor(30, 80, 200);
-      doc.setFontSize(11);
-      doc.setFont('helvetica', 'bold');
-
       const fields = [
         ['Nom \u2013 Pr\u00E9nom du salari\u00E9', f.nom],
         ['Date', f.date],
@@ -489,7 +796,6 @@
         ['Cause de la r\u00E9paration', f.cause],
         ['Temps pass\u00E9', f.temps],
       ];
-
       let y = 50;
       fields.forEach(([label, value]) => {
         doc.setTextColor(30, 80, 200);
@@ -506,7 +812,6 @@
         doc.setDrawColor(224, 231, 243);
         doc.line(14, y - 4, 196, y - 4);
       });
-
       doc.save(`fiche-entretien-${f.nom.replace(/\s+/g, '-').toLowerCase()}.pdf`);
     }
   </script>
