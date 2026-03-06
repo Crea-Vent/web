@@ -327,7 +327,13 @@
       align-items: center;
       justify-content: space-between;
       box-shadow: 0 2px 8px rgba(30,80,200,0.06);
+      cursor: pointer;
+      transition: box-shadow 0.15s, border-color 0.15s;
     }
+
+    .fiche-card:hover { border-color: #b0c8f5; box-shadow: 0 4px 14px rgba(30,80,200,0.12); }
+
+    .fiche-card .fiche-info { flex: 1; min-width: 0; }
 
     .fiche-card .fiche-info p {
       font-family: 'Montserrat', sans-serif;
@@ -339,6 +345,16 @@
     .fiche-card .fiche-info span {
       font-size: 0.75rem;
       color: #7b93c8;
+      display: block;
+      margin-top: 2px;
+    }
+
+    .fiche-card .fiche-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-shrink: 0;
+      margin-left: 12px;
     }
 
     .btn-pdf {
@@ -371,49 +387,130 @@
       font-weight: 800;
       letter-spacing: 0.08em;
       text-transform: uppercase;
-      padding: 3px 10px;
+      padding: 4px 10px;
       border-radius: 50px;
       white-space: nowrap;
     }
 
-    .statut-badge.traite   { background: #dcfce7; color: #16a34a; }
-    .statut-badge.en_cours { background: #fff7ed; color: #ea580c; }
+    .statut-badge.traite    { background: #dcfce7; color: #16a34a; }
+    .statut-badge.en_cours  { background: #fff7ed; color: #ea580c; }
     .statut-badge.a_traiter { background: #fee2e2; color: #dc2626; }
 
-    /* ── Actions admin fiche ── */
-    .fiche-actions {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      flex-wrap: wrap;
-      justify-content: flex-end;
+    /* ── Modal détail fiche ── */
+    .fiche-detail-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(10,20,60,0.4);
+      z-index: 250;
+      align-items: flex-end;
+      justify-content: center;
     }
 
-    .fiche-select {
+    .fiche-detail-overlay.open { display: flex; }
+
+    .fiche-detail-box {
+      background: #ffffff;
+      border-radius: 24px 24px 0 0;
+      padding: 28px 22px 36px;
+      width: 100%;
+      max-height: 85vh;
+      overflow-y: auto;
+      box-shadow: 0 -8px 40px rgba(30,80,200,0.15);
+    }
+
+    .fiche-detail-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+
+    .fiche-detail-header h3 {
       font-family: 'Montserrat', sans-serif;
-      font-size: 0.68rem;
-      font-weight: 700;
-      border: 1.5px solid #dce6f5;
-      border-radius: 8px;
-      padding: 6px 10px;
-      background: #fff;
+      font-size: 1rem;
+      font-weight: 900;
       color: #1a1a2e;
-      cursor: pointer;
-      outline: none;
+    }
+
+    .fiche-detail-header span {
+      font-family: 'Open Sans', sans-serif;
+      font-size: 0.78rem;
+      color: #7b93c8;
+      margin-top: 3px;
+      display: block;
+    }
+
+    .fiche-detail-field {
+      margin-bottom: 14px;
+    }
+
+    .fiche-detail-field .field-label {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.65rem;
+      font-weight: 800;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: #7b93c8;
+      margin-bottom: 4px;
+    }
+
+    .fiche-detail-field .field-value {
+      font-family: 'Open Sans', sans-serif;
+      font-size: 0.9rem;
+      color: #1a1a2e;
+    }
+
+    .fiche-detail-sep {
+      height: 1px;
+      background: #e0e7f3;
+      margin: 18px 0;
+    }
+
+    .fiche-detail-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 6px;
     }
 
     .btn-delete {
       background: #fee2e2;
       color: #dc2626;
       border: none;
-      border-radius: 8px;
-      padding: 7px 10px;
+      border-radius: 10px;
+      padding: 13px 16px;
       cursor: pointer;
       display: flex;
       align-items: center;
+      gap: 6px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
     }
 
     .btn-delete svg { width: 15px; height: 15px; fill: #dc2626; }
+
+    .statut-btn {
+      flex: 1;
+      padding: 13px;
+      border: 2px solid transparent;
+      border-radius: 10px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      cursor: pointer;
+      background: #f4f6fb;
+      color: #7b93c8;
+      transition: all 0.15s;
+    }
+
+    .statut-btn.selected-traite    { background: #dcfce7; color: #16a34a; border-color: #16a34a; }
+    .statut-btn.selected-en_cours  { background: #fff7ed; color: #ea580c; border-color: #ea580c; }
+    .statut-btn.selected-a_traiter { background: #fee2e2; color: #dc2626; border-color: #dc2626; }
 
     /* ── Formulaire Entretien ── */
     .form-entretien { display: flex; flex-direction: column; gap: 20px; }
@@ -687,10 +784,12 @@
       /* Actualités en grille 2 colonnes */
       .actu-list { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
 
-      /* Fiches en grille */
-      .fiches-list { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-      .fiche-card { flex-direction: column; align-items: flex-start; gap: 12px; }
-      .fiche-card .btn-pdf { align-self: flex-end; }
+      /* Fiches liste pleine largeur */
+      .fiches-list { display: flex; flex-direction: column; gap: 12px; }
+
+      /* Modal détail centrée sur desktop */
+      .fiche-detail-overlay { align-items: center; }
+      .fiche-detail-box { border-radius: 20px; max-width: 520px; }
 
       /* Formulaire centré avec max-width */
       .form-entretien { max-width: 560px; }
@@ -824,6 +923,11 @@
   </nav>
 
   </div><!-- /.main-area -->
+
+  <!-- ── Modal détail fiche ── -->
+  <div class="fiche-detail-overlay" id="fiche-detail-overlay">
+    <div class="fiche-detail-box" id="fiche-detail-box"></div>
+  </div>
 
   <!-- ── Modal Actualité ── -->
   <div class="modal-overlay" id="modal-overlay">
@@ -1095,26 +1199,10 @@
       }
       list.innerHTML = '';
       snap.forEach(doc => {
-        const f    = doc.data();
-        const id   = doc.id;
-        const isAdmin = !!auth.currentUser;
-        const statut  = f.statut || 'a_traiter';
-
-        const statutLabels = {
-          traite:    '✅ Traité',
-          en_cours:  '🔶 En cours',
-          a_traiter: '🔴 À traiter',
-        };
-
-        const adminHTML = isAdmin ? `
-          <select class="fiche-select" onchange="updateStatut('${id}', this.value)">
-            <option value="a_traiter" ${statut === 'a_traiter' ? 'selected' : ''}>🔴 À traiter</option>
-            <option value="en_cours"  ${statut === 'en_cours'  ? 'selected' : ''}>🔶 En cours</option>
-            <option value="traite"    ${statut === 'traite'    ? 'selected' : ''}>✅ Traité</option>
-          </select>
-          <button class="btn-delete" onclick="deleteFiche('${id}')" title="Supprimer">
-            <svg viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
-          </button>` : '';
+        const f      = doc.data();
+        const id     = doc.id;
+        const statut = f.statut || 'a_traiter';
+        const statutLabels = { traite:'✅ Traité', en_cours:'🔶 En cours', a_traiter:'🔴 À traiter' };
 
         const card = document.createElement('div');
         card.className = 'fiche-card';
@@ -1122,21 +1210,75 @@
           <div class="fiche-info">
             <p>${f.nom}</p>
             <span>${f.date} — ${f.fournisseur}</span>
-            <span class="statut-badge ${statut}" style="margin-top:6px;display:inline-block">${statutLabels[statut]}</span>
           </div>
-          <div class="fiche-actions">
-            <button class="btn-pdf" onclick="downloadPDF(${JSON.stringify(f).replace(/"/g, '&quot;')})">PDF</button>
-            ${adminHTML}
+          <div class="fiche-right">
+            <span class="statut-badge ${statut}">${statutLabels[statut]}</span>
+            <button class="btn-pdf" onclick="event.stopPropagation(); downloadPDF(${JSON.stringify(f).replace(/"/g, '&quot;')})">PDF</button>
           </div>
         `;
+        card.addEventListener('click', () => openFicheDetail(id, f));
         list.appendChild(card);
       });
     });
 
-    // ── Mettre à jour le statut ──
-    async function updateStatut(id, statut) {
+    // ── Ouvrir le détail d'une fiche ──
+    function openFicheDetail(id, f) {
+      const isAdmin = !!auth.currentUser;
+      const statut  = f.statut || 'a_traiter';
+      const statutLabels = { traite:'✅ Traité', en_cours:'🔶 En cours', a_traiter:'🔴 À traiter' };
+
+      const adminSection = isAdmin ? `
+        <div class="fiche-detail-sep"></div>
+        <p class="field-label" style="font-family:'Montserrat',sans-serif;font-size:0.65rem;font-weight:800;letter-spacing:0.15em;text-transform:uppercase;color:#7b93c8;margin-bottom:10px">Changer le statut</p>
+        <div style="display:flex;gap:8px;margin-bottom:18px;flex-wrap:wrap">
+          <button class="statut-btn ${statut==='a_traiter'?'selected-a_traiter':''}" onclick="setStatut('${id}','a_traiter')">🔴 À traiter</button>
+          <button class="statut-btn ${statut==='en_cours'?'selected-en_cours':''}" onclick="setStatut('${id}','en_cours')">🔶 En cours</button>
+          <button class="statut-btn ${statut==='traite'?'selected-traite':''}" onclick="setStatut('${id}','traite')">✅ Traité</button>
+        </div>
+        <div class="fiche-detail-actions">
+          <button class="btn-delete" onclick="deleteFiche('${id}')">
+            <svg viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
+            Supprimer
+          </button>
+          <button class="btn-submit" style="margin-top:0;flex:1" onclick="downloadPDF(${JSON.stringify(f).replace(/"/g, '&quot;')})">Télécharger PDF</button>
+        </div>` : `
+        <div class="fiche-detail-actions">
+          <button class="btn-submit" style="margin-top:0;width:100%" onclick="downloadPDF(${JSON.stringify(f).replace(/"/g, '&quot;')})">Télécharger PDF</button>
+        </div>`;
+
+      document.getElementById('fiche-detail-box').innerHTML = `
+        <div class="fiche-detail-header">
+          <div>
+            <h3>${f.nom}</h3>
+            <span>${f.date} — ${f.fournisseur}</span>
+          </div>
+          <span class="statut-badge ${statut}" id="detail-statut-badge">${statutLabels[statut]}</span>
+        </div>
+        <div class="fiche-detail-field">
+          <div class="field-label">Cause de la réparation</div>
+          <div class="field-value">${f.cause}</div>
+        </div>
+        <div class="fiche-detail-field">
+          <div class="field-label">Temps passé</div>
+          <div class="field-value">${f.temps}</div>
+        </div>
+        ${adminSection}
+      `;
+
+      document.getElementById('fiche-detail-overlay').classList.add('open');
+      window._ficheDetailId = id;
+    }
+
+    document.getElementById('fiche-detail-overlay').addEventListener('click', e => {
+      if (e.target === e.currentTarget) document.getElementById('fiche-detail-overlay').classList.remove('open');
+    });
+
+    // ── Changer le statut depuis le détail ──
+    async function setStatut(id, statut) {
       try {
         await db.collection('fiches').doc(id).update({ statut });
+        document.getElementById('fiche-detail-overlay').classList.remove('open');
+        showToast('Statut mis à jour.');
       } catch { showToast('Erreur lors de la mise à jour.'); }
     }
 
@@ -1145,6 +1287,7 @@
       if (!confirm('Supprimer définitivement cette fiche ?')) return;
       try {
         await db.collection('fiches').doc(id).delete();
+        document.getElementById('fiche-detail-overlay').classList.remove('open');
         showToast('Fiche supprimée.');
       } catch { showToast('Erreur lors de la suppression.'); }
     }
