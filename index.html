@@ -1092,6 +1092,16 @@
       }
     }
 
+    // ── Sécurité : échapper le HTML pour prévenir les injections XSS ──
+    function escapeHtml(str) {
+      return String(str ?? '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
     document.getElementById('login-overlay').addEventListener('click', e => {
       if (e.target === e.currentTarget) closeLogin();
     });
@@ -1174,10 +1184,10 @@
         card.innerHTML = `
           <div class="actu-top">
             <span class="actu-badge ${cat.cls}">${cat.label}</span>
-            <span class="actu-date">${date}</span>
+            <span class="actu-date">${escapeHtml(date)}</span>
           </div>
-          <p class="actu-title">${a.titre}</p>
-          <p class="actu-body">${a.contenu}</p>
+          <p class="actu-title">${escapeHtml(a.titre)}</p>
+          <p class="actu-body">${escapeHtml(a.contenu)}</p>
         `;
         if (auth.currentUser) {
           card.addEventListener('click', () => openActuEdit(id, a));
@@ -1293,11 +1303,11 @@
         card.className = 'fiche-card';
         card.innerHTML = `
           <div class="fiche-info">
-            <p>${f.nom}</p>
-            <span>${f.date} — ${f.fournisseur}</span>
+            <p>${escapeHtml(f.nom)}</p>
+            <span>${escapeHtml(f.date)} — ${escapeHtml(f.fournisseur)}</span>
           </div>
           <div class="fiche-right">
-            <span class="statut-badge ${statut}">${statutLabels[statut]}</span>
+            <span class="statut-badge ${escapeHtml(statut)}">${statutLabels[statut] ?? ''}</span>
             <button class="btn-pdf" onclick="event.stopPropagation(); downloadPDF(${JSON.stringify(f).replace(/"/g, '&quot;')})">PDF</button>
           </div>
         `;
@@ -1334,18 +1344,18 @@
       document.getElementById('fiche-detail-box').innerHTML = `
         <div class="fiche-detail-header">
           <div>
-            <h3>${f.nom}</h3>
-            <span>${f.date} — ${f.fournisseur}</span>
+            <h3>${escapeHtml(f.nom)}</h3>
+            <span>${escapeHtml(f.date)} — ${escapeHtml(f.fournisseur)}</span>
           </div>
-          <span class="statut-badge ${statut}" id="detail-statut-badge">${statutLabels[statut]}</span>
+          <span class="statut-badge ${escapeHtml(statut)}" id="detail-statut-badge">${statutLabels[statut] ?? ''}</span>
         </div>
         <div class="fiche-detail-field">
           <div class="field-label">Cause de la réparation</div>
-          <div class="field-value">${f.cause}</div>
+          <div class="field-value">${escapeHtml(f.cause)}</div>
         </div>
         <div class="fiche-detail-field">
           <div class="field-label">Temps passé</div>
-          <div class="field-value">${f.temps}</div>
+          <div class="field-value">${escapeHtml(f.temps)}</div>
         </div>
         ${adminSection}
       `;
