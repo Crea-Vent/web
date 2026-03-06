@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Transports Leac°</title>
+  <title>Transports LEAC°</title>
   <style>
     * {
       margin: 0;
@@ -24,7 +24,6 @@
     header {
       display: flex;
       align-items: center;
-      justify-content: space-between;
       padding: 20px 20px 16px;
       border-bottom: 1px solid #21262d;
     }
@@ -38,15 +37,6 @@
 
     .header-brand h1 span.dot {
       color: #4a90d9;
-      font-size: 1rem;
-    }
-
-    .header-brand p {
-      font-size: 0.65rem;
-      letter-spacing: 0.18em;
-      color: #8b949e;
-      text-transform: uppercase;
-      margin-top: 2px;
     }
 
     /* ── Pages ── */
@@ -64,6 +54,7 @@
     .page-content {
       padding: 24px 20px;
       flex: 1;
+      overflow-y: auto;
     }
 
     .section-title {
@@ -85,7 +76,6 @@
       justify-content: space-between;
       margin-bottom: 32px;
       overflow: hidden;
-      position: relative;
     }
 
     .card-bonjour .card-text p {
@@ -98,6 +88,7 @@
       font-size: 1.8rem;
       font-weight: 900;
       letter-spacing: 0.04em;
+      text-transform: uppercase;
     }
 
     .card-bonjour .card-text h2 span.dot {
@@ -132,17 +123,69 @@
       margin-top: 16px;
     }
 
-    /* ── Page Entretien ── */
-    #page-entretien .page-content {
+    /* ── Formulaire Entretien ── */
+    .form-entretien {
       display: flex;
-      justify-content: center;
-      align-items: center;
-      flex: 1;
+      flex-direction: column;
+      gap: 20px;
     }
 
-    #page-entretien .page-content p {
-      color: #4b5563;
-      font-size: 0.9rem;
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .form-group label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: #8b949e;
+    }
+
+    .form-group input,
+    .form-group textarea {
+      background-color: #161b22;
+      border: 1px solid #30363d;
+      border-radius: 10px;
+      padding: 14px 16px;
+      color: #ffffff;
+      font-size: 0.95rem;
+      font-family: inherit;
+      outline: none;
+      transition: border-color 0.2s;
+      width: 100%;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus {
+      border-color: #4a90d9;
+    }
+
+    .form-group textarea {
+      resize: none;
+      height: 90px;
+    }
+
+    .btn-submit {
+      margin-top: 8px;
+      padding: 16px;
+      background-color: #4a90d9;
+      color: #ffffff;
+      border: none;
+      border-radius: 12px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      cursor: pointer;
+      font-family: inherit;
+      transition: background-color 0.2s;
+    }
+
+    .btn-submit:active {
+      background-color: #3a7bc8;
     }
 
     /* ── Nav ── */
@@ -187,8 +230,7 @@
   <!-- Header -->
   <header>
     <div class="header-brand">
-      <h1>Transports Leac<span class="dot">°</span></h1>
-      <p>Gestion Flotte &amp; Maintenance</p>
+      <h1>Transports LEAC<span class="dot">°</span></h1>
     </div>
   </header>
 
@@ -201,7 +243,7 @@
       <div class="card-bonjour">
         <div class="card-text">
           <p>Bonjour,</p>
-          <h2>Salarié Leac<span class="dot">°</span></h2>
+          <h2>Salarié LEAC<span class="dot">°</span></h2>
           <div class="dash"></div>
         </div>
         <div class="card-icon">🚛</div>
@@ -216,7 +258,40 @@
   <!-- Page Entretien -->
   <div class="page" id="page-entretien">
     <div class="page-content">
-      <p>Contenu Entretien à venir.</p>
+
+      <p class="section-title">Nouvelle fiche entretien</p>
+
+      <form class="form-entretien" onsubmit="return false;">
+
+        <div class="form-group">
+          <label>Nom – Prénom du salarié</label>
+          <input type="text" placeholder="Ex : Dupont Jean">
+        </div>
+
+        <div class="form-group">
+          <label>Date</label>
+          <input type="date">
+        </div>
+
+        <div class="form-group">
+          <label>Fournisseur</label>
+          <input type="text" placeholder="Ex : Garage Martin">
+        </div>
+
+        <div class="form-group">
+          <label>Cause de la réparation</label>
+          <textarea placeholder="Décrivez la cause de la réparation…"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>Temps passé</label>
+          <input type="text" placeholder="Ex : 2h30">
+        </div>
+
+        <button class="btn-submit" type="submit">Enregistrer</button>
+
+      </form>
+
     </div>
   </div>
 
