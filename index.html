@@ -364,6 +364,57 @@
       padding: 20px 0;
     }
 
+    /* ── Statut badge ── */
+    .statut-badge {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.62rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 3px 10px;
+      border-radius: 50px;
+      white-space: nowrap;
+    }
+
+    .statut-badge.traite   { background: #dcfce7; color: #16a34a; }
+    .statut-badge.en_cours { background: #fff7ed; color: #ea580c; }
+    .statut-badge.a_traiter { background: #fee2e2; color: #dc2626; }
+
+    /* ── Actions admin fiche ── */
+    .fiche-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .fiche-select {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.68rem;
+      font-weight: 700;
+      border: 1.5px solid #dce6f5;
+      border-radius: 8px;
+      padding: 6px 10px;
+      background: #fff;
+      color: #1a1a2e;
+      cursor: pointer;
+      outline: none;
+    }
+
+    .btn-delete {
+      background: #fee2e2;
+      color: #dc2626;
+      border: none;
+      border-radius: 8px;
+      padding: 7px 10px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+    }
+
+    .btn-delete svg { width: 15px; height: 15px; fill: #dc2626; }
+
     /* ── Formulaire Entretien ── */
     .form-entretien { display: flex; flex-direction: column; gap: 20px; }
 
@@ -1005,6 +1056,7 @@
         fournisseur: document.getElementById('f-fournisseur').value.trim(),
         cause:       document.getElementById('f-cause').value.trim(),
         temps:       document.getElementById('f-temps').value.trim(),
+        statut:      'a_traiter',
         createdAt:   firebase.firestore.FieldValue.serverTimestamp()
       };
       try {
@@ -1043,19 +1095,59 @@
       }
       list.innerHTML = '';
       snap.forEach(doc => {
-        const f = doc.data();
+        const f    = doc.data();
+        const id   = doc.id;
+        const isAdmin = !!auth.currentUser;
+        const statut  = f.statut || 'a_traiter';
+
+        const statutLabels = {
+          traite:    '✅ Traité',
+          en_cours:  '🔶 En cours',
+          a_traiter: '🔴 À traiter',
+        };
+
+        const adminHTML = isAdmin ? `
+          <select class="fiche-select" onchange="updateStatut('${id}', this.value)">
+            <option value="a_traiter" ${statut === 'a_traiter' ? 'selected' : ''}>🔴 À traiter</option>
+            <option value="en_cours"  ${statut === 'en_cours'  ? 'selected' : ''}>🔶 En cours</option>
+            <option value="traite"    ${statut === 'traite'    ? 'selected' : ''}>✅ Traité</option>
+          </select>
+          <button class="btn-delete" onclick="deleteFiche('${id}')" title="Supprimer">
+            <svg viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
+          </button>` : '';
+
         const card = document.createElement('div');
         card.className = 'fiche-card';
         card.innerHTML = `
           <div class="fiche-info">
             <p>${f.nom}</p>
             <span>${f.date} — ${f.fournisseur}</span>
+            <span class="statut-badge ${statut}" style="margin-top:6px;display:inline-block">${statutLabels[statut]}</span>
           </div>
-          <button class="btn-pdf" onclick="downloadPDF(${JSON.stringify(f).replace(/"/g, '&quot;')})">PDF</button>
+          <div class="fiche-actions">
+            <button class="btn-pdf" onclick="downloadPDF(${JSON.stringify(f).replace(/"/g, '&quot;')})">PDF</button>
+            ${adminHTML}
+          </div>
         `;
         list.appendChild(card);
       });
     });
+
+    // ── Mettre à jour le statut ──
+    async function updateStatut(id, statut) {
+      try {
+        await db.collection('fiches').doc(id).update({ statut });
+      } catch { showToast('Erreur lors de la mise à jour.'); }
+    }
+
+    // ── Supprimer une fiche ──
+    async function deleteFiche(id) {
+      if (!confirm('Supprimer définitivement cette fiche ?')) return;
+      try {
+        await db.collection('fiches').doc(id).delete();
+        showToast('Fiche supprimée.');
+      } catch { showToast('Erreur lors de la suppression.'); }
+    }
 
     // ── Générer PDF ──
     function downloadPDF(f) {
@@ -1070,12 +1162,14 @@
       doc.setFontSize(9);
       doc.setFont('helvetica', 'normal');
       doc.text('FICHE D\'ENTRETIEN', 14, 22);
+      const statutTexte = { traite: 'Traité', en_cours: 'En cours', a_traiter: 'À traiter' };
       const fields = [
         ['Nom \u2013 Pr\u00E9nom du salari\u00E9', f.nom],
         ['Date', f.date],
         ['Fournisseur', f.fournisseur],
         ['Cause de la r\u00E9paration', f.cause],
         ['Temps pass\u00E9', f.temps],
+        ['Statut', statutTexte[f.statut] || 'À traiter'],
       ];
       let y = 50;
       fields.forEach(([label, value]) => {
