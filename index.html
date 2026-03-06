@@ -929,6 +929,39 @@
     <div class="fiche-detail-box" id="fiche-detail-box"></div>
   </div>
 
+  <!-- ── Modal édition actualité ── -->
+  <div class="modal-overlay" id="actu-edit-overlay">
+    <div class="modal">
+      <p class="modal-title">Modifier l'actualité</p>
+      <form id="form-actu-edit" onsubmit="submitActuEdit(event)">
+        <div class="form-group">
+          <label>Catégorie</label>
+          <select id="ae-cat">
+            <option value="annonce">📢 Annonce</option>
+            <option value="meteo">🌤️ Météo &amp; Routes</option>
+            <option value="rh">👥 RH &amp; Planning</option>
+            <option value="urgence">🚨 Urgence</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Titre</label>
+          <input type="text" id="ae-titre" required>
+        </div>
+        <div class="form-group">
+          <label>Contenu</label>
+          <textarea id="ae-contenu" required></textarea>
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="btn-delete" onclick="deleteActu()" style="flex:none">
+            <svg viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
+          </button>
+          <button type="button" class="btn-cancel" onclick="closeActuEdit()">Annuler</button>
+          <button type="submit" class="btn-submit" id="btn-actu-edit-submit" style="margin-top:0;flex:1.5">Enregistrer</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
   <!-- ── Modal Actualité ── -->
   <div class="modal-overlay" id="modal-overlay">
     <div class="modal">
@@ -1131,11 +1164,13 @@
       }
       list.innerHTML = '';
       snap.forEach(doc => {
-        const a = doc.data();
+        const a   = doc.data();
+        const id  = doc.id;
         const cat = cats[a.categorie] || cats.annonce;
         const date = a.createdAt ? a.createdAt.toDate().toLocaleDateString('fr-FR', { day: '2-digit', month: 'long', year: 'numeric' }) : '';
         const card = document.createElement('div');
         card.className = `actu-card ${cat.cls}`;
+        if (auth.currentUser) card.style.cursor = 'pointer';
         card.innerHTML = `
           <div class="actu-top">
             <span class="actu-badge ${cat.cls}">${cat.label}</span>
@@ -1144,9 +1179,59 @@
           <p class="actu-title">${a.titre}</p>
           <p class="actu-body">${a.contenu}</p>
         `;
+        if (auth.currentUser) {
+          card.addEventListener('click', () => openActuEdit(id, a));
+        }
         list.appendChild(card);
       });
     });
+
+    // ── Édition actualité ──
+    let _actuEditId = null;
+
+    function openActuEdit(id, a) {
+      _actuEditId = id;
+      document.getElementById('ae-cat').value    = a.categorie || 'annonce';
+      document.getElementById('ae-titre').value  = a.titre;
+      document.getElementById('ae-contenu').value = a.contenu;
+      document.getElementById('actu-edit-overlay').classList.add('open');
+    }
+
+    function closeActuEdit() {
+      document.getElementById('actu-edit-overlay').classList.remove('open');
+      _actuEditId = null;
+    }
+
+    document.getElementById('actu-edit-overlay').addEventListener('click', e => {
+      if (e.target === e.currentTarget) closeActuEdit();
+    });
+
+    async function submitActuEdit(e) {
+      e.preventDefault();
+      if (!_actuEditId) return;
+      const btn = document.getElementById('btn-actu-edit-submit');
+      btn.disabled = true;
+      try {
+        await db.collection('actualites').doc(_actuEditId).update({
+          categorie: document.getElementById('ae-cat').value,
+          titre:     document.getElementById('ae-titre').value.trim(),
+          contenu:   document.getElementById('ae-contenu').value.trim(),
+        });
+        closeActuEdit();
+        showToast('Actualité modifiée.');
+      } catch { showToast('Erreur lors de la modification.'); }
+      finally { btn.disabled = false; }
+    }
+
+    async function deleteActu() {
+      if (!_actuEditId) return;
+      if (!confirm('Supprimer cette actualité ?')) return;
+      try {
+        await db.collection('actualites').doc(_actuEditId).delete();
+        closeActuEdit();
+        showToast('Actualité supprimée.');
+      } catch { showToast('Erreur lors de la suppression.'); }
+    }
 
     // ── Soumettre une fiche entretien ──
     async function submitFiche(e) {
